@@ -28,14 +28,11 @@ class TodosList extends React.Component{
     
     handleTodoClick = (e,id) => {
         this.setState({
-            ...this.state, currentTodo: this.state.todoList[id-1]
+            ...this.state, currentTodo: this.state.todoList.find(todo => todo.id === id)
         })
     }
 
-    handleselfUpdate= () => {
-        this.setState({...this.state});
-    }
-
+    
     render(){
         let todoListElems =  this.state.todoList.map((item, i) => {
             return (
@@ -48,7 +45,7 @@ class TodosList extends React.Component{
                 {todoListElems}
             </div>
             <div>
-                 <TodoDisplayArea currentTodo = {this.state.currentTodo} handleselfUpdate = {this.handleselfUpdate}/>
+                 <TodoDisplayArea currentTodo = {this.state.currentTodo}/>
             </div>
            
             </div>
