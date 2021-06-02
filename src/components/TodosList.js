@@ -45,7 +45,7 @@ class TodosList extends React.Component{
                 {todoListElems}
             </div>
             <div>
-                 <TodoDisplayArea currentTodo = {this.state.currentTodo}/>
+                 <TodoDisplayArea currentTodo = {this.state.currentTodo} key={this.state.currentTodo.id} />
             </div>
            
             </div>

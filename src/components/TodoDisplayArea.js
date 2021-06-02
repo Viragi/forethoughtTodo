@@ -4,32 +4,41 @@ class TodoDisplayArea extends React.Component{
     constructor(props){
         super(props);
         this.state= {
-            title:this.props.currentTodo.title,
-            content: this.props.currentTodo.content
+            ...this.props.currentTodo,
+            timeOutId: null
         }
     }
 
-   static getDerivedStateFromProps(props, prevState){
-       return {...props} 
+    callUpdateApi = (id, content, title) => {
+        console.log("callUpdateApi callUpdateApi");
+        let url = `https://forested-crystalline-bonobo.glitch.me/:${id}?date_created=${new Date()}&id=${id}&content=${content}&title=${title}`;
+        fetch(url, {
+            method:'PUT'
+        }).then((res) => res.json()).then((res)=>console.log(res)).catch((e)=> console.log(e));
     }
 
-    handleUserInput = (e)=>{
+    funTimeOut =  () => {
+        let newTimoutId = setTimeout(this.callUpdateApi.bind(null,this.state.id, this.state.content, this.state.title),5000);
+        this.setState({...this.state, timeOutId: newTimoutId});
+    }
+
+    handleUserInput = (e) => {
+        console.log("inside",e.target.name );
         this.setState({
+            ...this.state,
             [e.target.name] : e.target.value
-        })
-        // setTimeout(callUpdateApi(content, id),10000,())
-    }
-
-    callUpdateApi = () => {
-        
+        });
+        clearTimeout(this.state.timeOutId);
+        this.funTimeOut();
+        // temp();
     }
 
     render(){
         return(
             <>
                 TodoDisplayArea
-                <input name = 'title' onChange = {this.handleUserInput} value = {this.state.currentTodo.title}/> 
-                <input name = 'content' onChange = {this.handleUserInput} value = {this.state.currentTodo.content}/>
+                <input name = 'title' onChange = {(e)=>this.handleUserInput(e)} value = {this.state.title}/> 
+                <input name = 'content' onChange = {(e)=>this.handleUserInput(e)} value = {this.state.content}/>
                 
             </>
         )
